@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="alert alert-info mt-3">表單發送範例</div>
+        <form action="" id="contact-form">
+            <div class="mb-2">
+                <label for="f-name" class="form-label">name</label>
+                <input type="text" id="f-name" class="form-control">
+            </div>
+            <div class="mb-2">
+                <label for="f-owner" class="form-label">owner</label>
+                <input type="text" id="f-owner" class="form-control">
+            </div>
+            <div class="mb-2">
+                <label for="f-contact" class="form-label">contact</label>
+                <input type="text" id="f-contact" class="form-control">
+            </div>
+            <div class="mb-2">
+                <label for="f-tel" class="form-label">tel</label>
+                <input type="text" id="f-tel" class="form-control">
+            </div>
+            <div class="mb-2">
+                <label for="f-email" class="form-label">email</label>
+                <input type="text" id="f-email" class="form-control">
+            </div>
+            <div class="mb-2">
+                <label for="f-content" class="form-label">content</label>
+                <input type="text" id="f-content" class="form-control">
+            </div>
+            <div class="mb-2">
+                <label for="f-reply" class="form-label">reply</label>
+                <input type="text" id="f-reply" class="form-control">
+            </div>
+            <div class="mb-2">
+                <label for="f-created_at" class="form-label">created_at</label>
+                <input type="text" id="f-created_at" class="form-control">
+            </div>
+            <div class="text-end">
+                <button type="button" class="btn btn-primary btn-sm" id="send">Submit</button>
+            </div>
+        </form>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    axios.defaults.responseType = 'json';
+    var api = 'https://script.google.com/macros/s/AKfycbztxPyWPuyeqX7cbZEh25quTaTi1qNsZ4P8rbfm8ZgB4z9bXFHNWFAHf0eFBy3tZQXhWQ/exec'
+
+    let btn = document.querySelector('#send');
+    let form = document.querySelector('#contact-form')
+
+    btn.addEventListener('click', function () {
+        let data = {
+            name: '',
+            owner: '',
+            contact: '',
+            tel: '',
+            email: '',
+            content: '',
+            reply: '',
+            created_at: '',
+        }
+
+        for (let i in data) {
+            let field = document.querySelector(`#f-${i}`);
+            if (field) {
+                data[i] = field.value;
+            }
+        }
+
+        btn.disabled = true;
+
+        axios({
+            url: api,
+            method: 'post',
+            params: data,
+        }).then(function (rep) {
+            form.reset();
+            alert('送出成功');
+        }).catch(function (e) {
+            alert('送出失敗');
+        }).finally(function () {
+            setTimeout(function () {
+                btn.disabled = false;
+            }, 2000);
+        })
+    });
+</script>
+
+</html>
